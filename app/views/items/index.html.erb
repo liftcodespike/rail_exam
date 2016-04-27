@@ -1,0 +1,36 @@
+<p>Welcome <%=session[:first_name]%></p><br>
+
+<p>Products that arent being sold by you: (View dashboard to see products you're selling.)</p>
+
+<a href='/sessions/<%=session[:user_id]%>' data-method='delete'>Logout</a> | <a href='/users/<%=session[:user_id]%>'>Dashboard</a><br><br>
+
+<table border=1px>
+	<tr>
+		<td>Item name</td>
+		<td>Date posted</td>
+		<td>Amount</td>
+		<td>Action</td>
+	</tr>
+	<%for item in @items %>
+		<% if item.user.id != session[:user_id] %>
+		<tr>
+			<td><%= item.name %></td>
+			<td><%=item.created_at%></td>
+			<td><%=item.amount%></td>
+			<td>
+				<form action='/sales' method="post">
+				<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+
+				<input type='hidden' name='buyer_id' value='<%=session[:user_id]%>'><br>
+				<input type='hidden' name='seller_id' value='<%=item.user.id%>'><br>
+				<input type='hidden' name='item_id' value='<%=item.id%>'><br>
+				<input type='submit' value='Buy'>
+					
+				</form>
+			</td>
+
+		</tr>
+		<% end %>
+	<% end if @items %>
+</table>
+

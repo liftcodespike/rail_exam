@@ -1,0 +1,9 @@
+    if !session[:user_id]
+      flash[:notice] = 'Please log in'
+      redirect_to '/'
+    end
+
+
+
+
+this will keep people from viewing pages they shouldn’t.

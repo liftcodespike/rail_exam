@@ -1,0 +1,87 @@
+<%for error in flash[:errors] %>
+<%=error %><br>
+<% end if flash[:errors] %>
+
+<a href='/sessions/<%=session[:user_id]%>' data-method='delete'>Logout</a> | <a href='/items/'>Home</a><br><br>
+
+
+<label>Add new product: </label>
+<form action='/items' method='post'>
+		<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+		<label>name of item: </label><input type='text' name='name'><br>
+		<label>amount: </label><input type='number' name='amount'><br>
+		<input type='hidden' name='user_id' value='<%=session[:user_id]%>'><br>
+		<input type='hidden' name='status' value='selling'><br>
+		<input type='submit' value='submit'>
+</form><br>
+
+
+<label>Items not yet sold:</label>
+<table border=1px>
+	<tr>
+		<td>Item name</td>
+		<td>Date posted</td>
+		<td>Amount</td>
+		<td>Action</td>
+	</tr>
+	<%for item in @selling %>
+		<tr>
+			<td><%= item.name %></td>
+			<td><%=item.created_at%></td>
+			<td><%=item.amount%></td>
+			<td><a href="/items/<%=item.id%>" data-method='delete'>Remove</a></td>
+
+		</tr>
+	<% end if @selling %>
+</table><br> <br>
+
+<% soldtotal = 0  %>
+<label>Sold items:</label>
+<table border=1px>
+	<tr>
+		<td>Item name</td>
+		<td>Date bought</td>
+		<td>Buyer</td>
+		<td>Amount</td>
+	</tr>
+
+
+	<%for this in @soldItems %>
+
+		<tr>
+			<td><%= this.item.name %></td>
+			<td><%= this.created_at %></td>
+			<td><%= this.buyer.first_name %></td>
+			<td><%= this.item.amount %></td>
+			<% soldtotal += this.item.amount %>
+		</tr>
+	<% end if @soldItems %>
+</table>
+<p>Total: <%=soldtotal%></p><br><br>
+
+<% boughttotal = 0  %>
+<label>Bought items:</label>
+<table border=1px>
+	<tr>
+		<td>Item name</td>
+		<td>Date bought</td>
+		<td>Buyer</td>
+		<td>Amount</td>
+	</tr>
+
+
+	<%for this in @boughtItems %>
+
+		<tr>
+			<td><%= this.item.name %></td>
+			<td><%= this.created_at %></td>
+			<td><%= this.buyer.first_name %></td>
+			<td><%= this.item.amount %></td>
+			<% boughttotal += this.item.amount %>
+		</tr>
+	<% end if @soldItems %>
+</table>
+<p>Total: <%=boughttotal%></p>
+
+
+

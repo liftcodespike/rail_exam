@@ -1,0 +1,32 @@
+<% if flash[:notice] %>
+	<p><%=flash[:notice]%></p><br>
+<%end%>
+
+<% for error in flash[:errors] %>
+	<%=error%><br>
+
+<% end if flash[:errors] %>
+
+<div id='register'>
+	<p> Register here.</p>
+	<form action='/users' method='post'>
+		<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+		<label>First name: </label><input type='text' name='first_name'><br>
+		<label>Last name: </label><input type='text' name='last_name'><br>
+		<label>Email: </label><input type='text' name='email'><br>
+		<label>Password</label><input type='text' name='password'><br>
+		<label>Confirm Password: </label><input type='text' name='confirm'><br>
+		<input type='submit' value='submit'><br>
+	</form>
+	
+</div>
+
+<div id='login'>
+	<form action='/sessions' method='post'>
+		<input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+		<label>Email: </label><input type='text' name='email'><br>
+		<label>Password: </label><input type='text' name='password'><br>
+		<input type ='submit' value='submit'>
+	</form>
+	
+</div>
